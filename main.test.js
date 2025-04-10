@@ -24,7 +24,14 @@ describe('add', () => {
         expect(add(input)).toBe(expectedSum)
     })
 
-    it('should handle newlines as delimiters in addition to commas', () => {
-        expect(add("1\n2,3")).toBe(6)
+    it('should support custom delimiters specified in the format "//[delimiter]\\n[numbers]"', () => {
+        expect(add("//;\n1;2")).toBe(3)
+        expect(add("//|\n4|5|6")).toBe(15)
+        expect(add("//#\n7#8#9")).toBe(24)
+        expect(add("//@\n10@20@30")).toBe(60)
+    })
+
+    it('should throw an error if brackets are used as delimiters', () => {
+        expect(() => add("//[\n1[2")).toThrow('Invalid delimiter: brackets are not allowed')
     })
 })
