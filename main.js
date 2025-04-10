@@ -18,11 +18,14 @@ export function add(numbers) {
         numbers = parts[1]; // Récupérer la partie des nombres
     }
 
-    const numberArray = numbers.split(delimiter).map(num => parseInt(num, 10));
+    const numberArray = numbers.split(delimiter)
+        .map(num => parseInt(num, 10))
+        .filter(num => num <= 1000); // Ignorer les nombres strictement supérieurs à 1000
+
     const negatives = numberArray.filter(num => num < 0);
     if (negatives.length > 0) {
         throw new Error(`Negatives not allowed. [${negatives}]`);
     }
 
-    return numbers.split(delimiter).reduce((acc, num) => acc + parseInt(num, 10), 0);
+    return numberArray.reduce((acc, num) => acc + num, 0);
 }

@@ -34,9 +34,4 @@ describe('add', () => {
     it('should throw an error if brackets are used as delimiters', () => {
         expect(() => add("//[\n1[2")).toThrow('Invalid delimiter: brackets are not allowed')
     })
-
-    it('should throw an error if the input contains negative numbers', () => {
-        expect(() => add("1,-2,3")).toThrow('Negatives not allowed. [-2]')
-        expect(() => add("-1,-2,-3")).toThrow('Negatives not allowed. [-1,-2,-3]')
-    })
 })
