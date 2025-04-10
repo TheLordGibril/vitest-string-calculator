@@ -9,12 +9,26 @@ export function add(numbers) {
         const specialChars = /[.*+?^${}()|[\]\\]/g; // Délimiteurs à échapper
         const extractedDelimiter = parts[0].slice(2);
 
-        // Vérifier si le délimiteur contient un crochet
-        if (extractedDelimiter.includes('[') || extractedDelimiter.includes(']')) {
-            throw new Error('Invalid delimiter: brackets are not allowed');
+        if (extractedDelimiter.startsWith('[') && extractedDelimiter.endsWith(']')) {
+            // Extraire le délimiteur entre crochets
+            const delimiters = extractedDelimiter
+                .slice(1, -1) // Retirer les crochets
+                .split(']['); // Gérer plusieurs délimiteurs
+
+            if (delimiters.some(d => d.includes('[') || d.includes(']'))) {
+                throw new Error('Invalid delimiter: brackets are not allowed');
+            }
+
+            delimiter = new RegExp(
+                delimiters.map(d => d.replace(specialChars, '\\$&')).join('|') // Échapper les caractères spéciaux
+            ); // Créer une regex pour tous les délimiteurs
+        } else {
+            if (extractedDelimiter.includes('[') || extractedDelimiter.includes(']')) {
+                throw new Error('Invalid delimiter: brackets are not allowed');
+            }
+            delimiter = new RegExp(extractedDelimiter.replace(specialChars, '\\$&')); // Échapper le délimiteur simple
         }
 
-        delimiter = new RegExp(extractedDelimiter.replace(specialChars, '\\$&')); // Extraire et échapper le délimiteur
         numbers = parts[1]; // Récupérer la partie des nombres
     }
 
