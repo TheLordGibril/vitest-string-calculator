@@ -23,4 +23,8 @@ describe('add', () => {
         const expectedSum = (100 * (100 + 1)) / 2 // Sum of first 100 natural numbers
         expect(add(input)).toBe(expectedSum)
     })
+
+    it('should handle newlines as delimiters in addition to commas', () => {
+        expect(add("1\n2,3")).toBe(6)
+    })
 })
